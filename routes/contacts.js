@@ -3,7 +3,8 @@ import Contact from "../models/contactsModel.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 const router = express.Router();
 
-router.get("/contacts", authMiddleware, async (req, res) => {
+// Get all contacts for the authenticated user
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const contacts = await Contact.find({ user: req.user._id });
     res.json(contacts);
@@ -14,6 +15,7 @@ router.get("/contacts", authMiddleware, async (req, res) => {
   }
 });
 
+// Create a new contact for the authenticated user
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name, email, phone, category } = req.body;
@@ -33,6 +35,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+// Update an existing contact for the authenticated user
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -51,6 +54,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// Delete a contact for the authenticated user
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const contact = await Contact.findById(req.params.id);
@@ -65,4 +69,5 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 export default router;

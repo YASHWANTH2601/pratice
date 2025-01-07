@@ -6,6 +6,7 @@ import crypto from "crypto";
 const secretkey =
   process.env.JWT_SECRET || crypto.randomBytes(64).toString("hex");
 
+// Authentication middleware
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -14,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1]; // Extract the token
-
+  console.log(token);
   jwt.verify(token, secretkey, async (err, payload) => {
     if (err) {
       return res.status(401).json({ error: "Unauthorized" }); // Respond immediately for invalid token
